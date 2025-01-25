@@ -2,9 +2,10 @@ package weather;
 
 public class ParseWeatherResponse {
 	
+	// Sets a member instance of the request class in order to inherit it's getresponse function
 	private final Requests request;
 	
-	// Empty Constructor
+	// Sets the request instance 
 	public ParseWeatherResponse(String city) {
 		this.request = new Requests("http://api.weatherapi.com/v1/alerts.json?key=ef3b958c26084d69a2d222506251801&q=" + city);
 	}
