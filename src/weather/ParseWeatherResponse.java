@@ -1,28 +1,44 @@
 package weather;
 
-public class ParseWeatherResponse extends Requests {
+public class ParseWeatherResponse {
+	
+	private final Requests request;
 	
 	// Empty Constructor
-	public ParseWeatherResponse() {}
-	
-	// Inherits from parent class Requests
-	public ParseWeatherResponse(String url) {
-		super(url);
+	public ParseWeatherResponse(String city) {
+		this.request = new Requests("http://api.weatherapi.com/v1/alerts.json?key=ef3b958c26084d69a2d222506251801&q=" + city);
 	}
+	
 	
 	// Parses the json response from Requests, and returns string array of alerts
 	public String weatherAlert() {
 		String alertArray = "";
 		try {
-			String response = this.GetJsonResponse();
 			
-			String alertsContent = response.split("\"alerts\":")[1]; // Extract "alerts" section
-			if (!alertsContent.split("\"alert\":")[1].isEmpty()) {
-				alertArray = alertsContent.split("\"alert\":")[1];   // Extract "alert" array
+			// Use the requests class to get API respone
+			String response = request.GetResponse();
+			
+			// Make sure the responses aren't empty before splitting
+			if (!response.split("\"alerts\":")[1].isEmpty()) {
+				
+				// Extract "alerts" section
+				String alertsContent = response.split("\"alerts\":")[1]; 
+				
+				if (!alertsContent.split("\"alert\":")[1].isEmpty()) {
+					
+				// Extract "alert" array	
+				alertArray = alertsContent.split("\"alert\":")[1];   
+				}
+				
+				// If alertsContent is empty, don't store response to write
+				else {
+				System.out.println("There are no weather alerts for this location currently.");
+				}
 			}
 			else {
-				System.out.println("There are no weather alerts for this location currently.");
+				System.out.println("Response is empty");
 			}
+					
 				
 		}
 		catch (Exception e){
@@ -30,7 +46,7 @@ public class ParseWeatherResponse extends Requests {
 			e.printStackTrace();
 		}
 		
-        
+        // return the alerts content
         return alertArray;
 	}
 	

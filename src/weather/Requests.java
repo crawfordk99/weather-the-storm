@@ -7,11 +7,6 @@ import java.net.URL;
 
 public class Requests {
 	private String _url;
-	private String _jsonResponse;
-	
-	public String GetJsonResponse() {
-		return _jsonResponse;
-	}
 	
 	public Requests() {}
 	
@@ -19,10 +14,12 @@ public class Requests {
 		this._url = url;
 	}
 	
-	public void GetResponse() {
+	public String GetResponse() {
 		try {
             // Define the URL
             URL url = new URL(this._url);
+            
+            // Class for making http requests
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             // Set request method and headers
@@ -34,6 +31,8 @@ public class Requests {
                 // Read the response
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
+                
+                // Use to build response line by line
                 String inputLine;
 
                 while ((inputLine = in.readLine()) != null) {
@@ -43,8 +42,8 @@ public class Requests {
 
                 // Convert response to a String
                 String jsonResponse = response.toString();
-                System.out.println(jsonResponse);
-                this._jsonResponse = jsonResponse;
+                
+                return jsonResponse;
                 
             } else {
                 System.out.println("Request failed. HTTP Error Code: " + conn.getResponseCode());
@@ -53,6 +52,7 @@ public class Requests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+		return null;
     }
 
 }
